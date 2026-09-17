@@ -1,0 +1,183 @@
+<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AIQUEST — Complete Exhibition Prototype</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui;background:#070b18;color:#eef3ff}button,input,select{font:inherit}button{cursor:pointer}.app{display:flex;min-height:100vh}.side{width:245px;background:#0d1327;border-right:1px solid #26304d;padding:20px;position:sticky;top:0;height:100vh}.brand{font-size:25px;font-weight:900;color:#72e6ff}.muted{color:#9aa8c7}.nav{display:grid;gap:7px;margin-top:24px}.nav button{background:transparent;border:0;color:#b7c5e6;text-align:left;padding:12px;border-radius:10px}.nav button.active,.nav button:hover{background:#172746;color:#fff}.main{flex:1;padding:30px;max-width:1500px}.top{display:flex;justify-content:space-between;gap:15px;align-items:center;flex-wrap:wrap}.pill{padding:7px 11px;border:1px solid #2c4169;border-radius:30px;color:#91f2c5;font-size:12px}.hero{margin-top:25px;padding:35px;border:1px solid #26395d;border-radius:22px;background:linear-gradient(135deg,#111d39,#10152b)}h1{font-size:clamp(32px,5vw,64px);line-height:1.05;margin:10px 0}h2{margin-top:0}.accent{color:#70e4ff}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:20px}.card{background:#10182c;border:1px solid #26395d;border-radius:16px;padding:20px}.card h3{margin:8px 0}.btn{background:#6de3ff;color:#07101c;border:0;border-radius:10px;padding:10px 15px;font-weight:800}.btn.alt{background:#1a2946;color:#dce9ff;border:1px solid #344b73}.view{display:none}.view.active{display:block}.tag{display:inline-block;background:#1b3150;color:#8deaff;padding:4px 8px;border-radius:6px;font-size:12px}.question{font-size:19px;font-weight:700;margin:20px 0}.option{display:block;width:100%;text-align:left;margin:8px 0;background:#17233d;color:#dce7ff;border:1px solid #31486e;padding:12px;border-radius:9px}.option:hover{border-color:#70e4ff}.result{margin-top:15px;color:#91f2c5}.labbox{height:180px;background:#080d1b;border:1px dashed #38517d;border-radius:12px;position:relative;overflow:hidden}.dot{width:9px;height:9px;background:#70e4ff;border-radius:50%;position:absolute}.bar{height:12px;background:#233452;border-radius:20px;overflow:hidden}.bar span{display:block;height:100%;background:#70e4ff;width:78%}textarea,input,select{width:100%;background:#0a1122;border:1px solid #34496e;color:#fff;border-radius:9px;padding:11px;margin:8px 0}.footer{margin-top:35px;color:#7f90b2;font-size:13px}.small{font-size:13px}.hide{display:none}@media(max-width:800px){.app{display:block}.side{position:static;width:100%;height:auto}.nav{grid-template-columns:repeat(3,1fr)}.nav button{font-size:12px}.main{padding:18px}}
+
+/* AIQUEST enhancement layer */
+:root{--bg:#060a16;--panel:#0d1426;--panel2:#111c33;--line:#263a62;--text:#edf4ff;--muted:#9aa9c9;--cyan:#70e4ff;--green:#91f2c5;--gold:#ffd66b}
+body{background:radial-gradient(circle at 75% 0%,#12254a 0%,#070b18 38%,#050812 100%);overflow-x:hidden}
+.app{min-height:100vh}
+.side{background:rgba(10,16,34,.92);backdrop-filter:blur(14px);box-shadow:12px 0 40px rgba(0,0,0,.18)}
+.main{padding:28px 34px}
+.top{position:sticky;top:0;z-index:20;padding:12px 0;background:linear-gradient(#070b18 65%,transparent);backdrop-filter:blur(3px)}
+.hero{position:relative;overflow:hidden;min-height:390px;display:flex;flex-direction:column;justify-content:center}
+.hero:before{content:"";position:absolute;inset:-80px;background:
+radial-gradient(circle at 20% 50%,rgba(112,228,255,.12),transparent 28%),
+radial-gradient(circle at 75% 30%,rgba(145,242,197,.10),transparent 25%);pointer-events:none}
+.hero>*:not(.network){position:relative;z-index:2}
+.network{position:absolute;inset:0;opacity:.8;pointer-events:none}
+.network canvas{width:100%;height:100%}
+.hero h1{max-width:800px}
+.featured{margin-top:18px}
+.featured .card{transition:.2s transform,.2s border-color}
+.featured .card:hover{transform:translateY(-3px);border-color:var(--cyan)}
+.card{box-shadow:0 8px 30px rgba(0,0,0,.12)}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;flex-wrap:wrap}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.filter{border:1px solid #30466f;background:#101b31;color:#bcd0ef;border-radius:999px;padding:8px 12px}
+.filter.active,.filter:hover{border-color:var(--cyan);color:#fff;background:#162a48}
+.arch{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0}
+.arch .node{padding:12px 15px;border:1px solid #36527d;background:#111d34;border-radius:13px;text-align:center;min-width:115px}
+.arch .arrow{color:var(--cyan);font-size:22px}
+.scenario{font-size:12px;color:#9deccf;margin-top:10px;padding:7px 9px;background:#102a2a;border-radius:8px}
+.quiz-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.timer{font-size:28px;font-weight:900;color:var(--gold);min-width:70px;text-align:center}
+.timer.warn{color:#ff9b72}
+.scoreboard{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:15px}
+.score-pill{padding:9px 13px;border-radius:10px;background:#14233d;border:1px solid #30486f}
+.explanation{padding:12px;border-radius:10px;background:#0c2130;border:1px solid #245b6b;color:#cfeeff;margin-top:12px}
+.option.correct{border-color:#6ee7a7;background:#12382d}
+.option.wrong{border-color:#ff8f8f;background:#3a1d29}
+.share-card{background:linear-gradient(135deg,#132a48,#132f2b);border-color:#426b76}
+.play-card{min-height:330px}
+.slider-row{display:grid;grid-template-columns:1fr 80px;gap:10px;align-items:center;margin:12px 0}
+input[type=range]{padding:0;margin:0;accent-color:#70e4ff}
+.prediction{font-size:25px;font-weight:900;color:var(--green);margin:15px 0}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;gap:15px;padding:10px 0;border-bottom:1px solid #213351}
+.switch{position:relative;width:48px;height:26px;display:inline-block}.switch input{display:none}
+.switch span{position:absolute;inset:0;border-radius:20px;background:#2a3957;transition:.2s}
+.switch span:before{content:"";position:absolute;width:20px;height:20px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
+.switch input:checked+span{background:#238b73}.switch input:checked+span:before{transform:translateX(22px)}
+.challenge-box{display:flex;align-items:center;justify-content:center;min-height:170px;background:#080d1b;border:1px dashed #38517d;border-radius:12px;font-size:54px}
+.challenge-choice{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+@media(max-width:800px){.main{padding:18px}.hero{min-height:420px}.arch .arrow{display:none}}
+</style></head><body><div class="app"><aside class="side"><div class="brand">AIQUEST<span class="accent">.</span></div><div class="muted small">Explore • Experiment • Innovate</div><div class="nav" id="nav"></div><div class="footer">BSc AI & ML Exhibition<br>Prototype Mode</div></aside><main class="main"><div class="top"><div><b>AIQUEST Exhibition Hub</b><div class="muted small">An interactive journey from AI basics to innovation</div></div><span class="pill">● Offline Demo Ready</span></div><section id="home" class="view active">
+<div class="hero">
+  <div class="network"><canvas id="neuralCanvas"></canvas></div>
+  <span class="tag">WELCOME TO THE FUTURE</span>
+  <h1>Understand AI.<br><span class="accent">Experience Intelligence.</span></h1>
+  <p class="muted">AIQUEST turns complex AI ideas into an interactive exhibition journey—learn, experiment, question and innovate.</p>
+  <button class="btn" onclick="go('playground')">Enter AI Playground →</button>
+</div>
+<div class="featured">
+  <div class="section-head"><div><h2>Featured Spotlight</h2><p class="muted small">Jump directly to popular exhibition modules.</p></div></div>
+  <div class="grid">
+    <div class="card"><span class="tag">LEARN</span><h3>AI/ML Concepts</h3><p class="muted">Explore AI, ML, DL, NLP and Generative AI through visual flows.</p><button class="btn alt" onclick="go('learn')">Explore →</button></div>
+    <div class="card"><span class="tag">PLAY</span><h3>AI Playground</h3><p class="muted">Change data, clean a model and race against a simulated AI.</p><button class="btn alt" onclick="go('playground')">Experiment →</button></div>
+    <div class="card"><span class="tag">QUIZ</span><h3>Test Yourself</h3><p class="muted">Beat the 15-second timer and see your score instantly.</p><button class="btn alt" onclick="go('quiz')">Start Quiz →</button></div>
+  </div>
+</div>
+</section><section id="learn" class="view">
+<div class="section-head"><div><h2>Learn AI/ML</h2><p class="muted">Visualise how the core domains connect.</p></div></div>
+<div class="filters" id="topicFilters">
+  <button class="filter active" onclick="filterTopics('All',this)">All</button>
+  <button class="filter" onclick="filterTopics('AI',this)">AI</button>
+  <button class="filter" onclick="filterTopics('ML',this)">ML</button>
+  <button class="filter" onclick="filterTopics('DL',this)">DL</button>
+  <button class="filter" onclick="filterTopics('NLP',this)">NLP</button>
+  <button class="filter" onclick="filterTopics('GenAI',this)">GenAI</button>
+</div>
+<div class="arch">
+  <div class="node"><b>AI</b><br><span class="small muted">Broad field</span></div><span class="arrow">→</span>
+  <div class="node"><b>ML</b><br><span class="small muted">Learns from data</span></div><span class="arrow">→</span>
+  <div class="node"><b>DL</b><br><span class="small muted">Neural networks</span></div>
+  <span class="arrow">↘</span><div class="node"><b>NLP</b><br><span class="small muted">Human language</span></div>
+  <span class="arrow">↘</span><div class="node"><b>GenAI</b><br><span class="small muted">Creates content</span></div>
+</div>
+<div class="grid" id="topics"></div>
+</section><section id="quiz" class="view">
+<h2>Test Yourself</h2>
+<div class="card">
+  <div class="scoreboard"><div class="score-pill">Question: <b id="qnum">1/5</b></div><div class="score-pill">Score: <b id="qscore">0</b></div><div class="score-pill">Streak: <b id="qstreak">0</b></div></div>
+  <div class="quiz-meta"><span class="tag">15-SECOND CHALLENGE</span><div class="timer" id="timer">15</div></div>
+  <div id="quizbox"></div>
+</div>
+</section><section id="playground" class="view">
+<h2>AI Playground</h2><p class="muted">Change inputs and observe how a simple simulated AI system responds.</p>
+<div class="grid">
+<div class="card play-card"><h3>Data Detective</h3><p class="muted">Adjust house features. The prediction updates in real time.</p>
+<label>House size <span id="sizeVal">1000</span> sq ft</label>
+<div class="slider-row"><input id="houseSize" type="range" min="400" max="3000" value="1000" oninput="predictHouse()"><span></span></div>
+<label>Location quality <span id="locVal">5</span>/10</label>
+<div class="slider-row"><input id="locationQuality" type="range" min="1" max="10" value="5" oninput="predictHouse()"><span></span></div>
+<div class="prediction" id="housePrediction">₹55 lakh</div><p class="muted small">Demo prediction only—not a real property valuation.</p></div>
+<div class="card play-card"><h3>Model Doctor</h3><p class="muted">Toggle data-cleaning steps and watch the demo model improve.</p>
+<div class="toggle-row">Remove duplicates <label class="switch"><input id="dup" type="checkbox" onchange="doctorLive()"><span></span></label></div>
+<div class="toggle-row">Handle missing values <label class="switch"><input id="missing" type="checkbox" onchange="doctorLive()"><span></span></label></div>
+<div class="toggle-row">Check outliers <label class="switch"><input id="outlier" type="checkbox" onchange="doctorLive()"><span></span></label></div>
+<p class="prediction" id="accuracy">Accuracy: 61%</p><div class="bar"><span id="accuracyBar" style="width:61%"></span></div></div>
+<div class="card play-card"><h3>Human vs AI</h3><p class="muted">Identify the pattern as quickly as possible. AI response time is simulated.</p>
+<div class="challenge-box" id="challengeSymbol">▲</div>
+<div class="challenge-choice"><button class="option" onclick="humanChoice('Triangle')">Triangle</button><button class="option" onclick="humanChoice('Circle')">Circle</button><button class="option" onclick="humanChoice('Square')">Square</button><button class="option" onclick="humanChoice('Star')">Star</button></div>
+<p id="humanout" class="result">AI is ready. What shape do you see?</p><button class="btn alt" onclick="newChallenge()">New challenge</button>
+</div>
+</div></section><section id="lab" class="view"><h2>AI Lab</h2><p class="muted">Illustrative model-training simulation. Results are demo values, not a real trained model.</p><div class="card"><div class="labbox" id="dots"></div><p>Training progress</p><div class="bar"><span id="progress"></span></div><p id="labtext" class="result">Ready to train.</p><button class="btn" onclick="train()">Run training</button></div></section><section id="vision" class="view"><h2>AI Vision Demo</h2><div class="card"><p class="muted">Select an object and see how a basic classifier might label it.</p><select id="object"><option>Notebook</option><option>Water bottle</option><option>Mobile phone</option><option>Plant</option></select><button class="btn" onclick="vision()">Classify object</button><h3 id="visionout"></h3></div></section><section id="prompt" class="view"><h2>Prompt Battle</h2><div class="card"><p class="muted">Compare a vague prompt with a clear prompt.</p><textarea id="promptin" placeholder="Write a prompt for an AI study assistant..."></textarea><button class="btn" onclick="promptCheck()">Evaluate prompt</button><p id="promptout"></p></div></section><section id="ethics" class="view"><h2>AI Ethics Decision Room</h2><div class="card"><p><b>Scenario:</b> A college uses AI to shortlist scholarship applicants. What should happen before deployment?</p><button class="option" onclick="ethics('audit')">Check bias, privacy and human review</button><button class="option" onclick="ethics('speed')">Deploy immediately because it is faster</button><p id="ethicsout"></p></div></section><section id="student" class="view"><h2>AI for Student Life</h2><div class="grid"><div class="card"><h3>Study Planner</h3><input id="hours" type="number" placeholder="Available hours"><button class="btn" onclick="planner()">Create plan</button><p id="planout"></p></div><div class="card"><h3>Accessibility</h3><p class="muted">Ideas: speech-to-text, image descriptions, reading support and multilingual learning.</p></div><div class="card"><h3>Smart Campus</h3><p class="muted">Energy monitoring, attendance insights, library search and safety alerts—with privacy safeguards.</p></div></div></section><section id="career" class="view"><h2>AI Career Explorer</h2><div class="grid" id="careers"></div></section><section id="studio" class="view"><h2>Project Studio</h2><div class="card"><input id="problem" placeholder="Enter a real-life problem"><select id="method"><option>Classification</option><option>Prediction</option><option>NLP</option><option>Computer Vision</option><option>Recommendation</option></select><button class="btn" onclick="pitch()">Generate project pitch</button><p id="pitchout"></p></div></section><section id="dictionary" class="view"><h2>AI Dictionary</h2><input id="search" placeholder="Search a term" oninput="dict()"><div class="grid" id="terms"></div></section><section id="timeline" class="view"><h2>AI Timeline</h2><div class="grid" id="history"></div></section><section id="feedback" class="view"><h2>Visitor Feedback</h2><div class="card"><input id="visitor" placeholder="Your name (optional)"><textarea id="feed" placeholder="What did you learn or enjoy?"></textarea><button class="btn" onclick="feedback()">Submit locally</button><p id="feedout"></p></div></section><section id="team" class="view"><h2>Our Team</h2><div class="card"><h3>AIQUEST — Student Innovation Project</h3><p class="muted">Created by BSc AI & ML students to make artificial intelligence understandable, practical and responsible.</p><p>Team roles: Research • Design • Content • Demonstration • Presentation</p></div></section></main></div><script>
+const pages=[['home','Home'],['learn','Learn AI/ML'],['quiz','Test Yourself'],['playground','AI Playground'],['lab','AI Lab'],['vision','AI Vision'],['prompt','Prompt Battle'],['ethics','AI Ethics'],['student','AI for Students'],['career','Career Explorer'],['studio','Project Studio'],['dictionary','AI Dictionary'],['timeline','AI Timeline'],['feedback','Feedback'],['team','Our Team']];const nav=document.getElementById('nav');pages.forEach(([id,n],i)=>{let b=document.createElement('button');b.textContent=n;b.onclick=()=>go(id);if(!i)b.classList.add('active');nav.appendChild(b)});function go(id){document.querySelectorAll('.view').forEach(x=>x.classList.toggle('active',x.id===id));document.querySelectorAll('.nav button').forEach((b,i)=>b.classList.toggle('active',pages[i][0]===id))}
+const topics=[
+['Artificial Intelligence','Machines performing tasks that normally need human intelligence.','AI','Healthcare, Finance, Smart assistants'],
+['Machine Learning','A system learns patterns from data instead of only fixed rules.','ML','Fraud detection, Recommendations, Agriculture'],
+['Deep Learning','Machine learning using layered neural networks.','DL','Medical imaging, Speech recognition, Self-driving systems'],
+['NLP','Technology that helps computers process human language.','NLP','Chatbots, Translation, Sentiment analysis'],
+['Generative AI','AI that creates new text, images, audio or code.','GenAI','Content creation, Design, Coding assistants'],
+['Responsible AI','Fair, safe, transparent and privacy-aware AI.','AI','Healthcare, Education, Public services']
+];
+function renderTopics(filter='All'){
+ const el=document.getElementById('topics');
+ el.innerHTML=topics.filter(x=>filter==='All'||x[2]===filter).map(x=>`<div class="card"><span class="tag">${x[2]}</span><h3>${x[0]}</h3><p class="muted">${x[1]}</p><div class="scenario">Where used: ${x[3]}</div></div>`).join('');
+}
+function filterTopics(f,b){document.querySelectorAll('#topicFilters .filter').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderTopics(f)}
+renderTopics();
+
+let qs=[
+['What does ML learn from?',['Data','Only electricity','A keyboard'],0,'Machine learning identifies patterns from data.'],
+['NLP mainly works with?',['Robots','Human language','Batteries'],1,'NLP focuses on processing and understanding human language.'],
+['Which is a responsible AI practice?',['Ignoring bias','Protecting privacy','Hiding errors'],1,'Privacy protection and bias checks are key responsible-AI practices.'],
+['Generative AI can create?',['Only numbers','Text and images','Only cables'],1,'Generative AI can produce new content such as text and images.'],
+['Deep learning uses?',['Layered neural networks','Paper files','Manual registers'],0,'Deep learning uses multi-layer neural networks to learn representations.']
+];
+let qi=0,score=0,streak=0,timeLeft=15,timerId=null,answered=false;
+function startTimer(){
+ clearInterval(timerId); timeLeft=15; updateTimer();
+ timerId=setInterval(()=>{timeLeft--;updateTimer();if(timeLeft<=0){clearInterval(timerId);if(!answered) timeExpired();}},1000);
+}
+function updateTimer(){const t=document.getElementById('timer');if(t){t.textContent=timeLeft;t.classList.toggle('warn',timeLeft<=5)}}
+function renderQ(){
+ answered=false;
+ if(qi>=qs.length){clearInterval(timerId);quizbox.innerHTML=`<div class="share-card card"><h3>Quiz Complete! 🎉</h3><p>Your score: <b>${score}/${qs.length}</b></p><p>Correct answers: ${score} • Accuracy: ${Math.round(score/qs.length*100)}%</p><button class="btn" onclick="navigator.clipboard?.writeText('AIQUEST Quiz Score: '+score+'/'+qs.length);alert('Score copied!')">Share My Score / Rank</button> <button class="btn alt" onclick="qi=0;score=0;streak=0;renderQ()">Retry</button></div>`;return}
+ let q=qs[qi];document.getElementById('qnum').textContent=`${qi+1}/${qs.length}`;document.getElementById('qscore').textContent=score;document.getElementById('qstreak').textContent=streak;
+ quizbox.innerHTML=`<div class="question">${q[0]}</div>`+q[1].map((o,i)=>`<button class="option" onclick="answer(${i},this)">${o}</button>`).join('')+`<div id="qresult"></div>`;
+ startTimer();
+}
+function answer(i,btn){
+ if(answered)return; answered=true;clearInterval(timerId);
+ const q=qs[qi];const ok=i===q[2];document.querySelectorAll('#quizbox .option').forEach((b,j)=>{if(j===q[2])b.classList.add('correct');if(j===i&&!ok)b.classList.add('wrong')});
+ if(ok){score++;streak++}else streak=0;
+ qresult.innerHTML=`<div class="explanation"><b>${ok?'✓ Correct':'✗ Not quite'}</b> — ${q[3]}</div><button class="btn" style="margin-top:10px" onclick="qi++;renderQ()">Next →</button>`;
+ document.getElementById('qscore').textContent=score;document.getElementById('qstreak').textContent=streak;
+}
+function timeExpired(){
+ if(answered)return;answered=true;streak=0;document.getElementById('qstreak').textContent=0;
+ qresult.innerHTML=`<div class="explanation"><b>Time's up!</b> — ${qs[qi][3]}</div><button class="btn" style="margin-top:10px" onclick="qi++;renderQ()">Next →</button>`;
+}
+renderQ();
+
+function predictHouse(){
+ let s=+houseSize.value,l=+locationQuality.value;
+ sizeVal.textContent=s;locVal.textContent=l;
+ let lakh=Math.round(20+(s*.025)+(l*5));
+ housePrediction.textContent='₹'+lakh+' lakh';
+}
+predictHouse();
+function doctorLive(){
+ let a=61+(dup.checked?9:0)+(missing.checked?12:0)+(outlier.checked?8:0);
+ accuracy.textContent='Accuracy: '+a+'%';accuracyBar.style.width=a+'%';
+}
+let shapes=[['▲','Triangle'],['●','Circle'],['■','Square'],['★','Star']], currentShape=0, challengeStart=0;
+function newChallenge(){currentShape=Math.floor(Math.random()*shapes.length);challengeSymbol.textContent=shapes[currentShape][0];humanout.textContent='AI is ready. What shape do you see?';challengeStart=performance.now()}
+function humanChoice(ans){let ms=Math.round(performance.now()-challengeStart);let right=ans===shapes[currentShape][1];humanout.textContent=right?`Correct in ${ms} ms. Simulated AI identification: 120 ms.`:`Not quite. The shape was ${shapes[currentShape][1]}. Simulated AI: 120 ms.`}
+newChallenge();
+
+function detect(){detectout.textContent=feature.value==='Study hours'?'Correct! Study hours can be a useful predictive feature.':'This may be unrelated noise. Choose a feature connected to the target.'}
+function planner(){let h=Number(hours.value)||0;planout.textContent=h?`Suggested plan: ${Math.round(h*.5)}h concepts, ${Math.round(h*.3)}h practice, ${Math.round(h*.2)}h revision.`:'Enter available hours.'}const careers=[['Data Analyst','Find patterns and explain data.'],['ML Engineer','Build and evaluate learning models.'],['AI Product Designer','Design useful human-centred AI experiences.'],['NLP Specialist','Work with language and conversational systems.'],['AI Ethics Researcher','Study fairness, safety, privacy and impact.'],['Computer Vision Engineer','Build systems that understand images and video.']];careersEl=document.getElementById('careers');careersEl.innerHTML=careers.map(x=>`<div class="card"><h3>${x[0]}</h3><p class="muted">${x[1]}</p></div>`).join('');function pitch(){let p=problem.value.trim();pitchout.textContent=p?`Project idea: ${p}. Approach: ${method.value}. Inputs → preprocessing → model → evaluation → human review.`:'Enter a problem first.'}const terms=[...topics,['Dataset','A collection of examples used for analysis or training.'],['Algorithm','A step-by-step method for solving a problem.'],['Bias','A systematic unfair pattern in data or decisions.'],['Model','A learned system that produces predictions or outputs.']];function dict(){let s=search.value.toLowerCase();termsEl=document.getElementById('terms');termsEl.innerHTML=terms.filter(x=>(x[0]+' '+x[1]).toLowerCase().includes(s)).map(x=>`<div class="card"><h3>${x[0]}</h3><p class="muted">${x[1]}</p></div>`).join('')}dict();const history=[['1950','Turing asks whether machines can think.'],['1956','The term Artificial Intelligence becomes popular.'],['1997','A chess computer defeats world champion Garry Kasparov.'],['2012','Deep learning gains major recognition in image recognition.'],['2022+','Generative AI becomes widely used by the public.']];document.getElementById('history').innerHTML=history.map(x=>`<div class="card"><span class="tag">${x[0]}</span><p>${x[1]}</p></div>`).join('');function feedback(){feedout.textContent='Thank you! This prototype stores no online data; your feedback is shown only in this session.'}
+
+const nc=document.getElementById('neuralCanvas');
+if(nc){const ctx=nc.getContext('2d');let pts=[];function resize(){const r=nc.parentElement.getBoundingClientRect();nc.width=r.width*devicePixelRatio;nc.height=r.height*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);pts=Array.from({length:28},()=>({x:Math.random()*r.width,y:Math.random()*r.height,vx:(Math.random()-.5)*.35,vy:(Math.random()-.5)*.35}))}function draw(){const r=nc.parentElement.getBoundingClientRect();ctx.clearRect(0,0,r.width,r.height);for(const p of pts){p.x+=p.vx;p.y+=p.vy;if(p.x<0||p.x>r.width)p.vx*=-1;if(p.y<0||p.y>r.height)p.vy*=-1;ctx.beginPath();ctx.arc(p.x,p.y,2.2,0,Math.PI*2);ctx.fillStyle='rgba(112,228,255,.8)';ctx.fill()}for(let i=0;i<pts.length;i++)for(let j=i+1;j<pts.length;j++){let dx=pts[i].x-pts[j].x,dy=pts[i].y-pts[j].y,d=Math.hypot(dx,dy);if(d<130){ctx.strokeStyle=`rgba(112,228,255,${.14*(1-d/130)})`;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke()}}requestAnimationFrame(draw)}resize();window.addEventListener('resize',resize);draw()}
+</script></body></html>
